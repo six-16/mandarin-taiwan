@@ -1,5 +1,5 @@
 /* Service worker : met tout en cache pour un usage 100 % hors-ligne. Change VERSION à chaque mise à jour. */
-const VERSION = 'mandarin50-v1';
+const VERSION = 'mandarin50-v2';
 const FILES = [
   './', 'index.html', 'style.css', 'app.js', 'config.js', 'words.js', 'chars.js', 'hanzi-writer.min.js',
   'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png', 'icons/apple-touch-icon.png'
