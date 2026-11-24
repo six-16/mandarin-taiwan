@@ -41,6 +41,34 @@ function readHTML(w, mode) {
 const plainPy = w => w.syl.map(s => s.py).join(' ');
 const sizeClass = w => (w.zh.length >= 5 ? 'xlong' : w.zh.length >= 3 ? 'long' : '');
 
+/* =====================  Son même en mode silencieux (iPhone)  ===================== */
+/* Sur iPhone, l'interrupteur « silence » coupe la synthèse vocale. On demande à Safari de classer l'app comme
+   « lecture audio » (navigator.audioSession) et on fait tourner un son silencieux pendant les lectures. */
+const Silent = {
+  el: null, t: null,
+  init() {
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}
+    if (this.el) return;
+    try {
+      const n = 800, buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+      const w = (o, str) => { for (let i = 0; i < str.length; i++) v.setUint8(o + i, str.charCodeAt(i)); };
+      w(0, 'RIFF'); v.setUint32(4, 36 + n, true); w(8, 'WAVEfmt '); v.setUint32(16, 16, true);
+      v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, 8000, true); v.setUint32(28, 8000, true);
+      v.setUint16(32, 1, true); v.setUint16(34, 8, true); w(36, 'data'); v.setUint32(40, n, true);
+      for (let i = 0; i < n; i++) v.setUint8(44 + i, 128);
+      const a = new Audio(URL.createObjectURL(new Blob([buf], { type: 'audio/wav' })));
+      a.loop = true; a.setAttribute('playsinline', ''); this.el = a;
+    } catch (e) {}
+  },
+  on() {
+    this.init(); clearTimeout(this.t);
+    try { if (this.el) { const p = this.el.play(); if (p && p.catch) p.catch(() => {}); } } catch (e) {}
+    this.t = setTimeout(() => this.off(), 20000);   // s'éteint seul après 20 s sans parole
+  },
+  off() { try { this.el && this.el.pause(); } catch (e) {} }
+};
+document.addEventListener('pointerdown', () => Silent.init(), { once: true });
+
 /* =====================  Voix (synthèse vocale du téléphone)  ===================== */
 const TTS = {
   voices: [], token: 0, _cur: null,
@@ -68,6 +96,7 @@ const TTS = {
   speak(text, kind, rate) {
     return new Promise(resolve => {
       if (!this.supported || !String(text).trim()) { resolve(false); return; }
+      Silent.on();
       const u = new SpeechSynthesisUtterance(text);
       const v = this.pick(kind);
       if (v) { u.voice = v; u.lang = v.lang; } else u.lang = kind === 'zh' ? 'zh-TW' : 'fr-FR';
