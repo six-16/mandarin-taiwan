@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mandarin Taïwan · 50 mots</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Les 50 mots essentiels pour se débrouiller en mandarin de Taïwan.">
+<meta name="theme-color" content="#F5EFE3">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mandarin 50">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="seal" aria-hidden="true" lang="zh-Hant-TW">學</div>
+  <div class="top-title">
+    <h1>Mandarin de Taïwan</h1>
+    <p id="progress-line">0 / 50 mots appris</p>
+  </div>
+  <button class="icon-btn" id="btn-settings" aria-label="Réglages">
+    <svg viewBox="0 0 24 24"><use href="#i-gear"/></svg>
+  </button>
+</header>
+
+<main>
+  <!-- ============ APPRENDRE ============ -->
+  <section id="tab-learn" class="tab active" aria-label="Apprendre">
+    <div id="welcome" class="welcome" hidden>
+      <div>
+        <strong id="welcome-title">Bienvenue !</strong>
+        <p id="welcome-msg"></p>
+      </div>
+      <button class="ghost-btn" id="welcome-close" aria-label="Fermer">✕</button>
+    </div>
+
+    <div class="chips" id="cat-chips" role="tablist" aria-label="Catégories"></div>
+    <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+    <ul class="word-list" id="word-list"></ul>
+  </section>
+
+  <!-- ============ VOITURE ============ -->
+  <section id="tab-car" class="tab" aria-label="Mode voiture">
+    <div class="car-now" id="car-now">
+      <div class="car-count" id="car-count">Prêt</div>
+      <div class="car-zh" id="car-zh" lang="zh-Hant-TW">開始</div>
+      <div class="car-py" id="car-py">kāi shǐ</div>
+      <div class="car-fr" id="car-fr">Appuie sur ▶ pour lancer</div>
+      <div class="car-step" id="car-step"></div>
+    </div>
+
+    <div class="car-ctrl">
+      <button class="round-btn" id="car-prev" aria-label="Mot précédent"><svg viewBox="0 0 24 24"><use href="#i-prev"/></svg></button>
+      <button class="round-btn big" id="car-play" aria-label="Lecture / pause"><svg viewBox="0 0 24 24"><use href="#i-play"/></svg></button>
+      <button class="round-btn" id="car-next" aria-label="Mot suivant"><svg viewBox="0 0 24 24"><use href="#i-next"/></svg></button>
+    </div>
+
+    <div class="card opts">
+      <div class="opt">
+        <span class="opt-label">Mode</span>
+        <div class="seg" id="car-mode">
+          <button data-v="discover" class="on">Découverte</button>
+          <button data-v="quiz">Quiz audio</button>
+        </div>
+      </div>
+      <p class="hint" id="car-mode-hint">Je dis le mot, je donne le sens, puis je te laisse un temps pour répéter.</p>
+      <div class="opt">
+        <span class="opt-label">Thème</span>
+        <select id="car-cat"></select>
+      </div>
+      <div class="opt">
+        <span class="opt-label">Ordre</span>
+        <div class="seg" id="car-order">
+          <button data-v="seq" class="on">Dans l'ordre</button>
+          <button data-v="rand">Aléatoire</button>
+        </div>
+      </div>
+      <div class="opt">
+        <span class="opt-label">Temps pour répéter : <b id="car-pause-val">4</b> s</span>
+        <input type="range" id="car-pause" min="2" max="10" step="1" value="4">
+      </div>
+      <div class="opt">
+        <span class="opt-label">Vitesse de la voix : <b id="car-rate-val">0,85</b>×</span>
+        <input type="range" id="car-rate" min="0.5" max="1.1" step="0.05" value="0.85">
+      </div>
+      <label class="check-opt"><input type="checkbox" id="car-example"> Ajouter une phrase d'exemple</label>
+      <label class="check-opt"><input type="checkbox" id="car-skip"> Passer les mots déjà appris</label>
+      <label class="check-opt"><input type="checkbox" id="car-wake" checked> Garder l'écran allumé pendant la lecture</label>
+    </div>
+
+    <p class="hint car-warn" id="car-voice-warn" hidden></p>
+    <p class="hint car-warn">Lance la lecture <b>avant</b> de démarrer, puis pose le téléphone : tout se fait à l'oreille, sans toucher l'écran. Branche-le en Bluetooth ou en câble sur l'autoradio. Garde les yeux sur la route.</p>
+  </section>
+
+  <!-- ============ DESSINER ============ -->
+  <section id="tab-draw" class="tab" aria-label="Dessiner">
+    <div class="chips" id="draw-words" aria-label="Choisir un mot"></div>
+
+    <div class="draw-head">
+      <div class="draw-info">
+        <div class="draw-py" id="draw-py"></div>
+        <div class="draw-fr" id="draw-fr"></div>
+      </div>
+      <button class="icon-btn lg" id="draw-speak" aria-label="Écouter"><svg viewBox="0 0 24 24"><use href="#i-sound"/></svg></button>
+    </div>
+
+    <div class="char-tabs" id="char-tabs"></div>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage"></div>
+    </div>
+    <p class="draw-msg" id="draw-msg">Choisis un mot, regarde l'ordre des traits, puis essaie à ton tour.</p>
+
+    <div class="draw-btns">
+      <button class="btn" id="draw-anim"><svg viewBox="0 0 24 24"><use href="#i-eye"/></svg> Voir les traits</button>
+      <button class="btn primary" id="draw-quiz"><svg viewBox="0 0 24 24"><use href="#i-pen"/></svg> À moi de tracer</button>
+    </div>
+    <div class="draw-btns">
+      <button class="btn" id="draw-blind">Sans modèle (difficile)</button>
+      <button class="btn" id="draw-reset">Effacer</button>
+    </div>
+  </section>
+
+  <!-- ============ CHECKLIST ============ -->
+  <section id="tab-check" class="tab" aria-label="Ma checklist pour Taïwan">
+    <h2 class="sec-title">Ma checklist pour Taïwan</h2>
+    <div class="progress"><div class="progress-bar" id="check-bar"></div></div>
+    <p class="hint" id="check-count"></p>
+    <div id="check-lists"></div>
+    <p class="hint">Les règles d'entrée et de séjour changent : vérifie toujours les informations sur les sites officiels avant de partir.</p>
+  </section>
+</main>
+
+<nav class="tabbar" aria-label="Navigation">
+  <button class="tab-btn active" data-tab="learn"><svg viewBox="0 0 24 24"><use href="#i-book"/></svg><span>Apprendre</span></button>
+  <button class="tab-btn" data-tab="car"><svg viewBox="0 0 24 24"><use href="#i-car"/></svg><span>Voiture</span></button>
+  <button class="tab-btn" data-tab="draw"><svg viewBox="0 0 24 24"><use href="#i-pen"/></svg><span>Dessiner</span></button>
+  <button class="tab-btn" data-tab="check"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg><span>Checklist</span></button>
+</nav>
+
+<!-- ============ FICHE MOT ============ -->
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Fiche du mot">
+  <div class="sheet-inner">
+    <div class="sheet-bar">
+      <button class="icon-btn" id="sheet-close" aria-label="Fermer"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
+      <span class="sheet-cat" id="sheet-cat"></span>
+      <span class="sheet-num" id="sheet-num"></span>
+    </div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </div>
+</div>
+
+<!-- ============ RÉGLAGES ============ -->
+<div class="sheet" id="settings" hidden role="dialog" aria-modal="true" aria-label="Réglages">
+  <div class="sheet-inner">
+    <div class="sheet-bar">
+      <button class="icon-btn" id="settings-close" aria-label="Fermer"><svg viewBox="0 0 24 24"><use href="#i-back"/></svg></button>
+      <span class="sheet-cat">Réglages</span>
+    </div>
+    <div class="sheet-body">
+      <div class="card opts">
+        <div class="opt">
+          <span class="opt-label">Transcription</span>
+          <div class="seg" id="set-script">
+            <button data-v="pinyin">Pinyin</button>
+            <button data-v="zhuyin">Zhuyin ㄅㄆㄇ</button>
+            <button data-v="both" class="on">Les deux</button>
+          </div>
+        </div>
+        <p class="hint">À Taïwan, on apprend avec le zhuyin (ㄅㄆㄇㄈ) ; le pinyin est le système utilisé en Occident.</p>
+        <div class="opt">
+          <span class="opt-label">Voix chinoise</span>
+          <select id="set-voice-zh"></select>
+        </div>
+        <div class="opt">
+          <span class="opt-label">Voix française</span>
+          <select id="set-voice-fr"></select>
+        </div>
+        <button class="btn" id="set-test">🔊 Tester la voix</button>
+        <p class="hint" id="set-voice-info"></p>
+      </div>
+      <div class="card opts">
+        <button class="btn danger" id="set-reset">Remettre la progression à zéro</button>
+        <p class="hint">Efface les mots « appris » et les cases cochées de la checklist, sur ce téléphone uniquement.</p>
+      </div>
+      <p class="hint center">50 mots pour Taïwan · fonctionne sans connexion une fois ouverte.</p>
+    </div>
+  </div>
+</div>
+
+<!-- icônes -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-book" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 5.5C4 4.7 4.7 4 5.5 4H11v15H5.5C4.7 19 4 18.3 4 17.5v-12zM20 5.5c0-.8-.7-1.5-1.5-1.5H13v15h5.5c.8 0 1.5-.7 1.5-1.5v-12z"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M5 16.5V12l1.8-4.6c.2-.6.8-1 1.4-1h7.6c.6 0 1.2.4 1.4 1L19 12v4.5M3.5 16.5h17v2h-17zM7.5 13.5h.01M16.5 13.5h.01M5.5 12h13"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M15.5 4.5l4 4L8 20H4v-4L15.5 4.5zM13.5 6.5l4 4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="8" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5.5v13a.8.8 0 001.2.7l10.2-6.5a.8.8 0 000-1.4L9.2 4.8A.8.8 0 008 5.5z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4.2" height="14" rx="1" fill="currentColor"/><rect x="13.8" y="5" width="4.2" height="14" rx="1" fill="currentColor"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path fill="currentColor" d="M6 6.5v11a.7.7 0 001.1.6l7-5.5a.7.7 0 000-1.1l-7-5.5A.7.7 0 006 6.5zM16.5 6h1.8v12h-1.8z"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path fill="currentColor" d="M18 6.5v11a.7.7 0 01-1.100.6l-7-5.5a.7.7 0 010-1.100l7-5.500A.7.7 0 0118 6.500zM5.700 6h1.800v12H5.700z"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 9.500v5h3.500L12 18.500v-13L7.500 9.500H4zM15.500 9a4 4 0 010 6M18 6.500a7.500 7.500 0 010 11"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M2.500 12S6 5.500 12 5.500 21.500 12 21.500 12 18 18.500 12 18.500 2.500 12 2.500 12z"/><circle cx="12" cy="12" r="2.800" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+  </defs>
+</svg>
+
+<script src="config.js"></script>
+<script src="words.js"></script>
+<script src="chars.js"></script>
+<script src="hanzi-writer.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
